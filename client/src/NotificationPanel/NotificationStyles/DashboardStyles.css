@@ -1,0 +1,77 @@
+/* General dashboard styling */
+.dashboard {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Navbar styling */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .navbar h2 {
+    margin: 0;
+  }
+  
+  .navbar .btn {
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+  
+  /* Dashboard content layout */
+  .dashboard-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  /* Timeline section styling */
+  .timeline-section {
+    flex: 1 1 100%;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .timeline-section h3 {
+    margin-bottom: 15px;
+    color: #007bff;
+  }
+  
+  /* Notifications section styling */
+  .notifications-section {
+    flex: 1 1 100%;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .notifications-section h3 {
+    margin-bottom: 15px;
+    color: #007bff;
+  }
+  
+  /* Responsive layout adjustments */
+  @media (max-width: 768px) {
+    .dashboard-content {
+      flex-direction: column;
+    }
+  
+    .timeline-section,
+    .notifications-section {
+      flex: 1 1 100%;
+    }
+  }
+  
