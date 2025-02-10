@@ -1,6 +1,6 @@
 import React from 'react';
-import LoginForm from './LoginForm/LoginForm.js';
-import SignupForm from './SigupForm/SignupForm.js';
+import LoginForm from './LoginForm/LoginForm.jsx';
+import SignupForm from './SigupForm/SignupForm.jsx';
 
 const AuthContainer = ({ authMode, setAuthMode, onLogin, onSignup }) => {
   return (

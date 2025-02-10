@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import NotificationForm from './NotificationForm/NotificationForm.js';
-import NotificationList from './NotificationList/NotificationList.js';
+import NotificationForm from './NotificationForm/NotificationForm.jsx';
+import NotificationList from './NotificationList/NotificationList.jsx';
 import { NotificationService } from './NotificationAPI.js';
 import TimeLineDashboard from '../TimeLineGraph/TimeLineDashboard.js'; // Renamed import for clarity
 

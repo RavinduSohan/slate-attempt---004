@@ -1,9 +1,9 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import AuthContainer from './AuthContainer.js';
+import AuthContainer from './AuthContainer.jsx';
 import UserDashboard from '../NotificationPanel/Notificationdashboard.js';
-import ProtectedRoute from './ProtectedRoute.js';
-import NotFound from './NotFound.js';
+import ProtectedRoute from './ProtectedRoute.jsx';
+import NotFound from './NotFound.jsx';
 
 const AppRoutes = ({ isAuthenticated, userType, authMode, setAuthMode, handleLogin, handleSignup, handleLogout }) => {
   return (
