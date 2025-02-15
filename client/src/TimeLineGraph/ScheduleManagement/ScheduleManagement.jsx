@@ -14,7 +14,7 @@ const ScheduleManagement = ({ routes, onScheduleAdded }) => {
       setDate("");
       setStartTime("");
     } catch (error) {
-      console.error("Error adding schedule:", error);
+      console.error("Error adding schedule:", error.response?.data || error.message);
     }
   };
 

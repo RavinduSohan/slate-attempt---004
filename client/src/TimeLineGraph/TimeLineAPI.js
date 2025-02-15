@@ -28,9 +28,9 @@ export const ScheduleService = {
     return response.data.schedules;
   },
 
-  addSchedule: async (routeId, date, startTime) => {
+  addSchedule: async (routeID, date, startTime) => {
     const response = await axios.post(`${API_BASE_URL}/schedules`, {
-      routeId,
+      routeID,
       date,
       startTime
     });
