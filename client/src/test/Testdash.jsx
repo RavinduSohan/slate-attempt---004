@@ -3,6 +3,8 @@ import axios from 'axios';
 import NotificationForm from '../NotificationPanel/NotificationForm/NotificationForm.jsx';
 import NotificationList from '../NotificationPanel/NotificationList/NotificationList.jsx';
 import HeroSection from '../Components/herosection/herosection.jsx';
+import Carousel from '../Components/carousel/carousel.jsx';
+import FlippingCards from '../Components/flippingcards/flippingcards.jsx';
 
 const api = axios.create({
     baseURL: 'http://localhost:5000/api', 
@@ -63,8 +65,10 @@ const UserDashboard = ({ userType, onLogout }) => {
             Logout
           </button>
         </nav>
-        
+
         <HeroSection />
+        <FlippingCards />
+        <Carousel  />
 
         <div className="dashboard-content">
           <div className="notifications-section">

@@ -7,6 +7,8 @@ import UserDashboard from './test/Testdash.jsx';
 import TimeLineDashboard from './TimeLineGraph/TimeLineDashboard.jsx';
 import UseScheduleTimeline from './TimeLineGraph/newtimeline.jsx';
 import "bootstrap/dist/css/bootstrap.min.css";
+import 'slick-carousel/slick/slick.css'; 
+import 'slick-carousel/slick/slick-theme.css';
 
 
 export default function App() {
@@ -23,20 +25,21 @@ export default function App() {
               <Navigate to={`/${userType.replace(/\s+/g, '-').toLowerCase()}`} replace />
             ) : (
               <div className="auth-container">
-                <div className="auth-tabs">
-                  <button
-                    className="auth-tab"
-                    onClick={() => setAuthMode('login')}
-                  >
-                    Login
-                  </button>
-                  <button
-                    className="auth-tab"
-                    onClick={() => setAuthMode('signup')}
-                  >
-                    Sign Up
-                  </button>
-                </div>
+               <div className="auth-tabs d-flex justify-content-center mb-4">
+                <button
+                  className="auth-tab btn btn-outline-primary btn-lg me-2"
+                  onClick={() => setAuthMode('login')}
+                >
+                  Login
+                </button>
+                <button
+                  className="auth-tab btn btn-outline-primary btn-lg"
+                  onClick={() => setAuthMode('signup')}
+                >
+                  Sign Up
+                </button>
+              </div>
+
                 {authMode === 'login' ? (
                   <LoginForm onSubmit={handleLogin} />
                 ) : (
