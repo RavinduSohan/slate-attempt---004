@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import NotificationForm from './NotificationForm/NotificationForm.jsx';
 import NotificationList from './NotificationList/NotificationList.jsx';
 import { NotificationService } from './NotificationAPI.js';
-import TimeLineDashboard from '../TimeLineGraph/TimeLineDashboard.js'; // Renamed import for clarity
+import TimeLineDashboard from '../TimeLineGraph/TimeLineDashboard.jsx'; 
 
 const UserDashboard = ({ userType, onLogout }) => {
   const [notifications, setNotifications] = useState([]);

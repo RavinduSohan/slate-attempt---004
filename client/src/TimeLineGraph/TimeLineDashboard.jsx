@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { RouteService } from "./TimeLineAPI.js";
 import RouteManagement from "./RouteManagement/RouteManagement.jsx";
 import StationManagement from "./StationManagement/StationManagement.jsx";
-import ScheduleManagement from "./StationManagement/StationManagement.jsx";
+import ScheduleManagement from "./ScheduleManagement/ScheduleManagement.jsx";
 import ScheduleTimeline from "./ScheduleTimeline/ScheduleTimeline.jsx";
 
 function TimeLineDashboard() {

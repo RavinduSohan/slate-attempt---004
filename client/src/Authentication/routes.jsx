@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AuthContainer from './AuthContainer.jsx';
-import UserDashboard from '../NotificationPanel/Notificationdashboard.js';
+import UserDashboard from '../NotificationPanel/Notificationdashboard.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import NotFound from './NotFound.jsx';
 
