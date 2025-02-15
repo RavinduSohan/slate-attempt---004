@@ -6,6 +6,8 @@ import SignupForm from './Authentication/SigupForm/SignupForm.jsx';
 import UserDashboard from './test/Testdash.jsx';
 import TimeLineDashboard from './TimeLineGraph/TimeLineDashboard.jsx';
 import UseScheduleTimeline from './TimeLineGraph/newtimeline.jsx';
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 export default function App() {
   const { isAuthenticated, userType, handleLogin, handleSignup, handleLogout } = useContext(AuthContext);

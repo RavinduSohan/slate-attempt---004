@@ -16,24 +16,36 @@ const RouteManagement = ({ onRouteAdded }) => {
   };
 
   return (
-    <div className="mb-6">
-      <h3 className="text-lg font-medium mb-2">Add New Route</h3>
-      <div className="flex gap-2">
+    <div className=" p-4 px-5 mb-4 mx-auto" style={{ maxWidth: "600px" }}>
+   
+    <h3 className="text-dark fw-semibold border-bottom pb-2 mb-4 text-center">
+      Add New Route
+    </h3>
+  
+    <div className="row g-3">
+    
+      <div className="col-12">
         <input
           type="text"
           value={routeName}
           onChange={(e) => setRouteName(e.target.value)}
-          placeholder="Route Name"
-          className="border p-2 rounded"
+          placeholder="Enter Route Name"
+          className="form-control form-control-lg border-2 shadow-sm"
         />
+      </div>
+  
+    
+      <div className="col-12 text-center">
         <button 
           onClick={handleAddRoute}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          Add Route
+          className="btn btn-success btn-lg w-50 rounded-pill shadow"
+        > 
+          <i className="bi bi-plus-circle me-2"></i> Add Route
         </button>
       </div>
     </div>
+  </div>
+  
   );
 };
 

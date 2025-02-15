@@ -19,7 +19,7 @@ const NotificationForm = ({ onSubmit }) => {
       }}
       className="form-container"
     >
-      <h4>Send a Notification</h4>
+      <h4 class="text-dark text-center">Send a Notification</h4>
       
       <div className="form-group mb-3">
         <label htmlFor="receiverType" className="form-label">Receiver Type</label>

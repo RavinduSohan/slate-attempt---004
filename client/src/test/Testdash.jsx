@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import NotificationForm from '../NotificationPanel/NotificationForm/NotificationForm.jsx';
 import NotificationList from '../NotificationPanel/NotificationList/NotificationList.jsx';
-
+import HeroSection from '../Components/herosection/herosection.jsx';
 
 const api = axios.create({
     baseURL: 'http://localhost:5000/api', 
@@ -58,18 +58,20 @@ const UserDashboard = ({ userType, onLogout }) => {
     return (
       <div className="dashboard">
         <nav className="navbar">
-          <h2>Welcome, {userType}</h2>
+          <h2 style={{ marginLeft: '25px' }}>Welcome, {userType}</h2>
           <button onClick={onLogout} className="btn btn-danger">
             Logout
           </button>
         </nav>
         
+        <HeroSection />
+
         <div className="dashboard-content">
           <div className="notifications-section">
-            <h3>Post Notification</h3>
+            <h3 class="fs-1 fw-bold text-center mb-6 text-primary">Post Notification</h3>
             <NotificationForm onSubmit={handlePostNotification} />
             
-            <h3>Your Notifications</h3>
+            <h3 class="fs-1 fw-bold text-center mt-3 mb-6 text-primary">Your Notifications</h3>
             <NotificationList
               notifications={notifications}
               onDelete={handleDeleteNotification}

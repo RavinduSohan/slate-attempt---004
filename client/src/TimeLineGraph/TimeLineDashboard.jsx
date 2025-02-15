@@ -34,8 +34,8 @@ function TimeLineDashboard() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-6">Route and Schedule Management</h2>
+    <div className="container-fluid py-5">
+      <h2 className="text-primary fw-bold text-center mb-5 border-bottom pb-3">Route and Schedule Management</h2>
       
       <RouteManagement 
         routes={routes} 

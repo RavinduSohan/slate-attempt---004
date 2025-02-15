@@ -1,6 +1,9 @@
 import React from 'react';
 import Slider from 'react-slick';
 import './carousel.css'; 
+// import carouselimg01 from '../../assets/assetss (8).jpg';
+// import carouselimg02 from '../../assets/assetss (10).jpg';
+// import carouselimg03 from '../../assets/assetss (6).jpg';
 import carouselimg01 from '../../assets/assetss (8).jpg';
 import carouselimg02 from '../../assets/assetss (10).jpg';
 import carouselimg03 from '../../assets/assetss (6).jpg';
