@@ -2,15 +2,12 @@ import React, { useEffect, useState, createContext, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-// Create and export the context
 export const AuthContext = createContext();
 
-// Utility function to handle API calls
 const api = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
 
-// Add token to all requests
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {

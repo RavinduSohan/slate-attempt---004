@@ -8,8 +8,6 @@ import Notification from './NotificationPanel/models.js';
 const router = express.Router();
 
 
-// ============ Middleware ============
-
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -27,7 +25,6 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
-// ============ Auth Routes ============
 
 router.post('/api/auth/signup', async (req, res) => {
   try {
@@ -62,6 +59,7 @@ router.post('/api/auth/signup', async (req, res) => {
     res.status(500).json({ message: 'Error creating user', error: error.message });
   }
 });
+
 router.post('/api/auth/login', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -92,7 +90,7 @@ router.post('/api/auth/login', async (req, res) => {
   }
 });
 
-// ============ Notification Routes ============
+
 router.post('/api/notifications', authenticateToken, async (req, res) => {
   try {
     const { message, receiverType, senderType } = req.body;
