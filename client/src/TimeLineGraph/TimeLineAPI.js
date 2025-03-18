@@ -35,5 +35,16 @@ export const ScheduleService = {
       startTime
     });
     return response.data;
-  }
+  },
+  getLiveTimes: async (routeID, stationID, scheduleID) => {
+    
+      const response = await axios.post(`${API_BASE_URL}/routes/live`, {
+         routeID,
+         stationID,
+         scheduleID 
+      });
+      return response.data;
+     
+    
+  },
 };

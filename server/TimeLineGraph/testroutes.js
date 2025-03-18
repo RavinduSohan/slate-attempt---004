@@ -72,4 +72,58 @@ timerouter.get("/api/schedules/:routeID", async (req, res) => {
   }
 });
 
+timerouter.post("/api/routes/live", async (req, res) => {
+  try {
+    const { routeID, stationID, scheduleID } = req.body;
+    const currentTime = new Date();
+
+    
+    const route = await Route.findById(routeID);
+    const schedule = await Schedule.findById(scheduleID);
+
+    if (!route) return res.status(404).json({ message: "Route not found" });
+    if (!schedule) return res.status(404).json({ message: "Schedule not found" });
+
+    
+    const clickedStationIndex = route.stations.findIndex(
+      (station) => station._id.toString() === stationID
+    );
+
+    if (clickedStationIndex === -1) {
+      return res.status(404).json({ message: "Station not found" });
+    }
+
+    
+    let currentArrivalTime = new Date(currentTime);
+
+    
+    let arrivalTimes = route.stations.map((station, index) => {
+      if (index < clickedStationIndex) {
+        
+        return {
+          stationName: station.stationName,
+          arrivalTime: null,
+        };
+      }
+
+     
+      const arrivalTimeStr = currentArrivalTime.toTimeString().slice(0, 5);
+
+      
+      currentArrivalTime.setMinutes(currentArrivalTime.getMinutes() + station.timeGap);
+
+      return {
+        stationName: station.stationName,
+        arrivalTime: arrivalTimeStr,
+      };
+    });
+
+    res.json({ message: "Live arrival times calculated", arrivalTimes });
+  } catch (error) {
+    console.error("Error calculating live arrival times:", error);
+    res.status(500).json({ message: "Error calculating live arrival times" });
+  }
+});
+
+
 export default timerouter;
