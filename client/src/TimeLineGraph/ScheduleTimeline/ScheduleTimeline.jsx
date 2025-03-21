@@ -138,7 +138,7 @@ const ScheduleTimeline = ({ routes }) => {
               className="w-100"
             >
               <h4 className="fw-semibold">{station.stationName}</h4>
-              <p className="text-muted">Arrival: {station.arrivalTime || "Not Arrived"}</p>
+              <p className="text-muted">Arrival: {station.arrivalTime || "Already Arrived"}</p>
             </VerticalTimelineElement>
           ))}
         </VerticalTimeline>
