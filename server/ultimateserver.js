@@ -28,7 +28,7 @@ const authenticateToken = (req, res, next) => {
 
 router.post('/api/auth/signup', async (req, res) => {
   try {
-    const { username, password, userType } = req.body;
+    const { username, password, userType } = req.body; // Remove email
 
     const existingUser = await User.findOne({ username });
     if (existingUser) {
@@ -93,17 +93,19 @@ router.post('/api/auth/login', async (req, res) => {
 
 router.post('/api/notifications', authenticateToken, async (req, res) => {
   try {
-    const { message, receiverType, senderType } = req.body;
+    const { message, receiverType, senderType, fullNotice, priority } = req.body; // Include priority
     const notification = new Notification({
       message,
       receiverType,
-      senderType
+      senderType,
+      fullNotice,
+      priority // Save priority to the database
     });
 
     await notification.save();
     res.status(201).json({
       message: 'Notification created successfully',
-      notification
+      notification,
     });
   } catch (error) {
     res.status(500).json({ message: 'Error creating notification', error: error.message });

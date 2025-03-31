@@ -12,13 +12,17 @@ const NotificationSchema = new mongoose.Schema({
       required: true,
       enum: ['All', 'Passenger', 'Operator', 'Admin', 'Co-Main Station', 'Maintenance Crew']
     },
+    priority: { 
+        type: String, 
+        enum: ['Info', 'Warning', 'Error'], 
+        default: 'Info' // Ensure default value
+    },
+    fullNotice: { type: String }, // Make fullNotice optional
     createdAt: { type: Date, default: Date.now }
-  });
-  
-  
-  const Notification = mongoose.model('Notification', NotificationSchema);
+});
 
-  export default Notification;
+const Notification = mongoose.model('Notification', NotificationSchema);
+
+export default Notification;
 
 
-  

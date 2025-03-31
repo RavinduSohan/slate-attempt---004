@@ -15,17 +15,36 @@
     padding: 10px 15px;
     margin-bottom: 10px;
     border: 1px solid #ced4da;
-    border-radius: 5px;
+    border-radius: 8px;
     background-color: #ffffff;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease;
+    border-left: 8px solid;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .notification-item.info {
+    border-color: #28a745; /* Green for Info */
+    background-color: #e9f7fc;
+  }
+  
+  .notification-item.warning {
+    border-color: #dc3545; /* Red for Warning */
+    background-color: #fdecea;
+  }
+  
+  .notification-item.error {
+    border-color: #ffc107; /* Yellow for Error */
+    background-color: #fff8e1;
   }
   
   /* Hover effect for each notification */
   .notification-item:hover {
-    background-color: #f1f1f1;
+    transform: scale(1.02);
   }
   
   /* Message styling */
@@ -54,6 +73,22 @@
     color: #ffffff;
   }
   
+  .notification-item .badge {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.6rem;
+  }
+  
+  .notification-item .btn-success {
+    margin-left: 10px;
+  }
+
+  .notification-item .full-notice {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #333;
+    line-height: 1.5;
+  }
+  
   /* Mobile responsiveness */
   @media (max-width: 768px) {
     .notification-item {
@@ -70,4 +105,29 @@
       align-self: flex-end;
     }
   }
-  
+
+.card {
+  border-radius: 8px;
+}
+
+.card-header {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.card-body {
+  padding: 15px;
+}
+
+.card-title {
+  margin-bottom: 10px;
+}
+
+.card-text {
+  margin-bottom: 10px;
+}
+
+.btn {
+  font-size: 0.85rem;
+  padding: 5px 10px;
+}

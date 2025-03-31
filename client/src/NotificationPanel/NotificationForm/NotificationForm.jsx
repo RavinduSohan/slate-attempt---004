@@ -5,6 +5,8 @@ const NotificationForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
     message: '',
     receiverType: 'All',
+    priority: 'Info',
+    fullNotice: '' // Keep fullNotice optional
   });
 
   const handleChange = (e) => {
@@ -19,7 +21,7 @@ const NotificationForm = ({ onSubmit }) => {
       }}
       className="form-container"
     >
-      <h4 class="text-dark text-center">Send a Notification</h4>
+      <h4 className="text-dark text-center">Send a Notification</h4>
       
       <div className="form-group mb-3">
         <label htmlFor="receiverType" className="form-label">Receiver Type</label>
@@ -40,6 +42,21 @@ const NotificationForm = ({ onSubmit }) => {
       </div>
       
       <div className="form-group mb-3">
+        <label htmlFor="priority" className="form-label">Priority</label>
+        <select
+          name="priority"
+          value={formData.priority}
+          onChange={handleChange}
+          className="form-control"
+          id="priority"
+        >
+          <option value="Info">Info</option>
+          <option value="Warning">Warning</option>
+          <option value="Error">Error</option>
+        </select>
+      </div>
+
+      <div className="form-group mb-3">
         <label htmlFor="message" className="form-label">Message</label>
         <textarea
           name="message"
@@ -48,6 +65,19 @@ const NotificationForm = ({ onSubmit }) => {
           onChange={handleChange}
           className="form-control"
           id="message"
+          rows="3"
+        />
+      </div>
+
+      <div className="form-group mb-3">
+        <label htmlFor="fullNotice" className="form-label">Full Notice (Optional)</label>
+        <textarea
+          name="fullNotice"
+          placeholder="Enter detailed notice"
+          value={formData.fullNotice}
+          onChange={handleChange}
+          className="form-control"
+          id="fullNotice"
           rows="3"
         />
       </div>
