@@ -1,7 +1,35 @@
-import { Route, Schedule } from './models.js';
+import { Route, Schedule, LiveStation } from './models.js';
 import express from 'express';
+import jwt from 'jsonwebtoken';
 //this is the correct and new routes.js....
 const timerouter = express.Router();
+
+// Authentication middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Authentication token required' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(403).json({ message: 'Invalid token' });
+  }
+};
+
+// Authorization middleware for operators and admins
+const authorizeOperatorAdmin = (req, res, next) => {
+  const userType = req.user.userType;
+  if (userType !== 'Operator' && userType !== 'Admin') {
+    return res.status(403).json({ message: 'Access denied. Only operators and admins can perform this action.' });
+  }
+  next();
+};
 
 timerouter.post("/api/routes", async (req, res) => {
   try {
@@ -74,42 +102,42 @@ timerouter.get("/api/schedules/:routeID", async (req, res) => {
 
 timerouter.post("/api/routes/live", async (req, res) => {
   try {
-    const { routeID, stationID, scheduleID } = req.body;
-    const currentTime = new Date();
+    const { routeID, scheduleID } = req.body;
 
-    
     const route = await Route.findById(routeID);
     const schedule = await Schedule.findById(scheduleID);
 
     if (!route) return res.status(404).json({ message: "Route not found" });
     if (!schedule) return res.status(404).json({ message: "Schedule not found" });
 
-    
+    // Get the latest live station record
+    const liveStation = await LiveStation.findOne({ routeID, scheduleID })
+      .sort({ lastUpdated: -1 })
+      .limit(1);
+
+    if (!liveStation) {
+      return res.status(404).json({ message: "No live tracking data available yet" });
+    }
+
     const clickedStationIndex = route.stations.findIndex(
-      (station) => station._id.toString() === stationID
+      (station) => station._id.toString() === liveStation.stationID.toString()
     );
 
     if (clickedStationIndex === -1) {
       return res.status(404).json({ message: "Station not found" });
     }
 
-    
-    let currentArrivalTime = new Date(currentTime);
-
+    let currentArrivalTime = new Date(liveStation.currentTime);
     
     let arrivalTimes = route.stations.map((station, index) => {
       if (index < clickedStationIndex) {
-        
         return {
           stationName: station.stationName,
           arrivalTime: null,
         };
       }
 
-     
       const arrivalTimeStr = currentArrivalTime.toTimeString().slice(0, 5);
-
-      
       currentArrivalTime.setMinutes(currentArrivalTime.getMinutes() + station.timeGap);
 
       return {
@@ -125,5 +153,117 @@ timerouter.post("/api/routes/live", async (req, res) => {
   }
 });
 
+// Add a new endpoint to get the current live station data
+timerouter.get("/api/routes/live/:routeID/:scheduleID", async (req, res) => {
+  try {
+    const { routeID, scheduleID } = req.params;
+    
+    const liveStation = await LiveStation.findOne({ routeID, scheduleID })
+      .populate('routeID')
+      .populate('scheduleID');
+
+    if (!liveStation) {
+      return res.status(404).json({ message: "No live station data found" });
+    }
+
+    const route = liveStation.routeID;
+    const clickedStationIndex = route.stations.findIndex(
+      (station) => station._id.toString() === liveStation.stationID.toString()
+    );
+
+    let currentArrivalTime = new Date(liveStation.currentTime);
+    
+    let arrivalTimes = route.stations.map((station, index) => {
+      if (index < clickedStationIndex) {
+        return {
+          stationName: station.stationName,
+          arrivalTime: null,
+        };
+      }
+
+      const arrivalTimeStr = currentArrivalTime.toTimeString().slice(0, 5);
+      currentArrivalTime.setMinutes(currentArrivalTime.getMinutes() + station.timeGap);
+
+      return {
+        stationName: station.stationName,
+        arrivalTime: arrivalTimeStr,
+      };
+    });
+
+    res.json({ 
+      message: "Current live station data retrieved",
+      liveStation,
+      arrivalTimes 
+    });
+  } catch (error) {
+    console.error("Error retrieving live station data:", error);
+    res.status(500).json({ message: "Error retrieving live station data" });
+  }
+});
+
+timerouter.post("/api/routes/record-arrival", authenticateToken, authorizeOperatorAdmin, async (req, res) => {
+  try {
+    const { routeID, stationID, scheduleID, arrivalTime } = req.body;
+    const userType = req.user.userType;
+
+    // Delete any existing live station record for this route and schedule
+    await LiveStation.deleteMany({ routeID, scheduleID });
+
+    // Create new live station record
+    const newLiveStation = new LiveStation({
+      routeID,
+      scheduleID,
+      stationID,
+      currentTime: arrivalTime,
+      lastUpdated: new Date(),
+      recordedBy: {
+        userId: req.user.userId,
+        userType: userType
+      }
+    });
+
+    await newLiveStation.save();
+
+    // Get route details for calculating arrival times
+    const route = await Route.findById(routeID);
+    if (!route) return res.status(404).json({ message: "Route not found" });
+
+    const clickedStationIndex = route.stations.findIndex(
+      (station) => station._id.toString() === stationID
+    );
+
+    if (clickedStationIndex === -1) {
+      return res.status(404).json({ message: "Station not found" });
+    }
+
+    let currentArrivalTime = new Date(arrivalTime);
+    
+    let arrivalTimes = route.stations.map((station, index) => {
+      if (index < clickedStationIndex) {
+        return {
+          stationName: station.stationName,
+          arrivalTime: null,
+        };
+      }
+
+      const arrivalTimeStr = currentArrivalTime.toTimeString().slice(0, 5);
+      currentArrivalTime.setMinutes(currentArrivalTime.getMinutes() + station.timeGap);
+
+      return {
+        stationName: station.stationName,
+        arrivalTime: arrivalTimeStr,
+      };
+    });
+
+    res.json({ 
+      message: "Arrival recorded successfully",
+      liveStation: newLiveStation,
+      arrivalTimes 
+    });
+  } catch (error) {
+    console.error("Error recording arrival:", error);
+    res.status(500).json({ message: "Error recording arrival", error: error.message });
+  }
+});
 
 export default timerouter;

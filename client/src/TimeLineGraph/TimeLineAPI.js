@@ -2,14 +2,24 @@ import axios from 'axios';
 
 const API_BASE_URL = "http://localhost:5000/api";
 
+const getAuthToken = () => {
+  return localStorage.getItem('token');
+};
+
+const authHeaders = () => ({
+  headers: {
+    'Authorization': `Bearer ${getAuthToken()}`
+  }
+});
+
 export const RouteService = {
   getAllRoutes: async () => {
-    const response = await axios.get(`${API_BASE_URL}/routes`);
+    const response = await axios.get(`${API_BASE_URL}/routes`, authHeaders());
     return response.data.routes;
   },
 
   addRoute: async (routeName) => {
-    const response = await axios.post(`${API_BASE_URL}/routes`, { routeName });
+    const response = await axios.post(`${API_BASE_URL}/routes`, { routeName }, authHeaders());
     return response.data.route;
   },
 
@@ -17,14 +27,14 @@ export const RouteService = {
     const response = await axios.post(`${API_BASE_URL}/routes/${routeId}/stations`, {
       stationName,
       timeGap: Number(timeGap)
-    });
+    }, authHeaders());
     return response.data;
   }
 };
 
 export const ScheduleService = {
   getSchedulesByRoute: async (routeId) => {
-    const response = await axios.get(`${API_BASE_URL}/schedules/${routeId}`);
+    const response = await axios.get(`${API_BASE_URL}/schedules/${routeId}`, authHeaders());
     return response.data.schedules;
   },
 
@@ -33,18 +43,25 @@ export const ScheduleService = {
       routeID,
       date,
       startTime
-    });
+    }, authHeaders());
     return response.data;
   },
-  getLiveTimes: async (routeID, stationID, scheduleID) => {
-    
-      const response = await axios.post(`${API_BASE_URL}/routes/live`, {
-         routeID,
-         stationID,
-         scheduleID 
-      });
-      return response.data;
-     
-    
+
+  getLiveTimes: async (routeID, scheduleID) => {
+    const response = await axios.post(`${API_BASE_URL}/routes/live`, {
+      routeID,
+      scheduleID 
+    }, authHeaders());
+    return response.data;
+  },
+
+  recordStationArrival: async (routeID, stationID, scheduleID) => {
+    const response = await axios.post(`${API_BASE_URL}/routes/record-arrival`, {
+      routeID,
+      stationID,
+      scheduleID,
+      arrivalTime: new Date().toISOString()
+    }, authHeaders());
+    return response.data;
   },
 };

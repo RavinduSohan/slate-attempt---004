@@ -11,7 +11,12 @@ const ScheduleTimeline = ({ routes }) => {
   const [schedules, setSchedules] = useState([]);
   const [arrivalTimes, setArrivalTimes] = useState([]);
   const [liveArrivalTimes, setLiveArrivalTimes] = useState([]);
-  const [isLiveTracking, setIsLiveTracking] = useState(false); 
+  const [isLiveTracking, setIsLiveTracking] = useState(false);
+  const [error, setError] = useState("");
+  
+  // Get user type from localStorage
+  const userType = localStorage.getItem('userType');
+  const isOperatorOrAdmin = userType === 'Operator' || userType === 'Admin';
 
   useEffect(() => {
     const fetchSchedules = async () => {
@@ -19,8 +24,10 @@ const ScheduleTimeline = ({ routes }) => {
         try {
           const scheduleData = await ScheduleService.getSchedulesByRoute(selectedRouteId);
           setSchedules(scheduleData);
+          setError("");
         } catch (error) {
           console.error("Error fetching schedules:", error);
+          setError("Failed to fetch schedules. Please try again.");
         }
       }
     };
@@ -47,28 +54,69 @@ const ScheduleTimeline = ({ routes }) => {
 
     setArrivalTimes(times);
     setIsLiveTracking(false); 
+    setError("");
   };
 
   const fetchLiveArrivalTimes = async () => {
+    if (!selectedRouteId || !selectedScheduleId) {
+      setError("Please select route and schedule first");
+      return;
+    }
+
     try {
-      const response = await ScheduleService.getLiveTimes(selectedRouteId, selectedStationId, selectedScheduleId);
+      const response = await ScheduleService.getLiveTimes(selectedRouteId, selectedScheduleId);
       setLiveArrivalTimes(response.arrivalTimes);
       setIsLiveTracking(true); 
+      setError("");
     } catch (error) {
       console.error("Error fetching live tracking times:", error);
+      if (error.response?.status === 404) {
+        setError("No live tracking data available yet. Please wait for an operator to record station arrival.");
+      } else {
+        setError("Failed to fetch live arrival times. Please try again.");
+      }
+    }
+  };
+
+  const recordArrival = async () => {
+    if (!selectedRouteId || !selectedStationId || !selectedScheduleId) {
+      setError("Please select route, schedule, and station first");
+      return;
+    }
+
+    try {
+      const response = await ScheduleService.recordStationArrival(
+        selectedRouteId,
+        selectedStationId,
+        selectedScheduleId
+      );
+      setLiveArrivalTimes(response.arrivalTimes);
+      setIsLiveTracking(true);
+      setError("");
+    } catch (error) {
+      console.error("Error recording arrival:", error);
+      if (error.response?.status === 403) {
+        setError("Access denied. Only operators and admins can record arrivals.");
+      } else {
+        setError("Failed to record arrival. Please try again.");
+      }
     }
   };
 
   return (
     <div className="container-fluid px-4">
-     
       <h2 className="text-xl font-bold mb-4 text-center">Schedule Timeline</h2>
 
-     
       <div className="d-flex flex-wrap gap-3 mb-4 justify-content-center">
-        
         <select
-          onChange={(e) => setSelectedRouteId(e.target.value)}
+          onChange={(e) => {
+            setSelectedRouteId(e.target.value);
+            setSelectedStationId("");
+            setSelectedScheduleId("");
+            setLiveArrivalTimes([]);
+            setArrivalTimes([]);
+            setIsLiveTracking(false);
+          }}
           className="form-select form-select-lg border-2 shadow-sm w-auto"
         >
           <option value="">Select Route</option>
@@ -79,9 +127,13 @@ const ScheduleTimeline = ({ routes }) => {
           ))}
         </select>
 
-        
         <select
-          onChange={(e) => setSelectedScheduleId(e.target.value)}
+          onChange={(e) => {
+            setSelectedScheduleId(e.target.value);
+            setLiveArrivalTimes([]);
+            setArrivalTimes([]);
+            setIsLiveTracking(false);
+          }}
           disabled={!selectedRouteId}
           className="form-select form-select-lg border-2 shadow-sm w-auto"
         >
@@ -93,22 +145,22 @@ const ScheduleTimeline = ({ routes }) => {
           ))}
         </select>
 
-        
-        <select
-          onChange={(e) => setSelectedStationId(e.target.value)}
-          disabled={!selectedRouteId}
-          className="form-select form-select-lg border-2 shadow-sm w-auto"
-        >
-          <option value="">Check Station Arrival</option>
-          {routes
-            .find((route) => route._id === selectedRouteId)?.stations.map((station) => (
-              <option key={station._id} value={station._id}>
-                {station.stationName}
-              </option>
-            ))}
-        </select>
+        {isOperatorOrAdmin && (
+          <select
+            onChange={(e) => setSelectedStationId(e.target.value)}
+            disabled={!selectedRouteId}
+            className="form-select form-select-lg border-2 shadow-sm w-auto"
+          >
+            <option value="">Select Station for Recording</option>
+            {routes
+              .find((route) => route._id === selectedRouteId)?.stations.map((station) => (
+                <option key={station._id} value={station._id}>
+                  {station.stationName}
+                </option>
+              ))}
+          </select>
+        )}
 
-        
         <button
           onClick={calculateArrivalTimes}
           disabled={!selectedScheduleId}
@@ -117,17 +169,31 @@ const ScheduleTimeline = ({ routes }) => {
           <i className="bi bi-graph-up me-2"></i> Generate Arrival Graph
         </button>
 
-       
         <button
           onClick={fetchLiveArrivalTimes}
-          disabled={!selectedScheduleId || !selectedStationId}
+          disabled={!selectedScheduleId}
           className="btn btn-primary btn-lg shadow"
         >
           <i className="bi bi-wifi me-2"></i> Live Tracking
         </button>
+
+        {isOperatorOrAdmin && (
+          <button
+            onClick={recordArrival}
+            disabled={!selectedScheduleId || !selectedStationId}
+            className="btn btn-warning btn-lg shadow"
+          >
+            <i className="bi bi-record-circle me-2"></i> Record Arrival
+          </button>
+        )}
       </div>
 
-     
+      {error && (
+        <div className="alert alert-danger mb-4 text-center">
+          {error}
+        </div>
+      )}
+
       <div className="timeline-container bg-light p-4 rounded shadow">
         <VerticalTimeline>
           {(isLiveTracking ? liveArrivalTimes : arrivalTimes).map((station, idx) => (
@@ -146,6 +212,5 @@ const ScheduleTimeline = ({ routes }) => {
     </div>
   );
 };
-
 
 export default ScheduleTimeline;

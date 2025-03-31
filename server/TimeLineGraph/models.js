@@ -16,7 +16,16 @@ const StationSchema = new mongoose.Schema({
     startTime: { type: String, required: true },
   });
 
+  const LiveStationSchema = new mongoose.Schema({
+    routeID: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Route' },
+    scheduleID: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Schedule' },
+    stationID: { type: mongoose.Schema.Types.ObjectId, required: true },
+    lastUpdated: { type: Date, default: Date.now },
+    currentTime: { type: Date, required: true }
+  });
+
   const Route = mongoose.model('Route', RouteSchema);
   const Schedule = mongoose.model('Schedule', ScheduleSchema);
+  const LiveStation = mongoose.model('LiveStation', LiveStationSchema);
 
-  export { Route, Schedule };
+  export { Route, Schedule, LiveStation };
