@@ -28,16 +28,27 @@ const authenticateToken = (req, res, next) => {
 
 router.post('/api/auth/signup', async (req, res) => {
   try {
-    const { username, password, userType } = req.body; // Remove email
+    const { username, email, password, userType } = req.body; // Added email
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ 
+      $or: [
+        { username },
+        { email }
+      ]
+    });
+    
     if (existingUser) {
-      return res.status(400).json({ message: 'Username already exists' });
+      return res.status(400).json({ 
+        message: existingUser.username === username ? 
+          'Username already exists' : 
+          'Email already exists' 
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       username,
+      email,     // Add email to user creation
       password: hashedPassword,
       userType
     });
@@ -99,7 +110,7 @@ router.post('/api/notifications', authenticateToken, async (req, res) => {
       receiverType,
       senderType,
       fullNotice,
-      priority // Save priority to the database
+      priority 
     });
 
     await notification.save();

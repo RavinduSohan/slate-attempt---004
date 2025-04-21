@@ -1,10 +1,10 @@
 import { Route, Schedule, LiveStation } from './models.js';
 import express from 'express';
 import jwt from 'jsonwebtoken';
-//this is the correct and new routes.js....
+
 const timerouter = express.Router();
 
-// Authentication middleware
+
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -22,7 +22,7 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
-// Authorization middleware for operators and admins
+
 const authorizeOperatorAdmin = (req, res, next) => {
   const userType = req.user.userType;
   if (userType !== 'Operator' && userType !== 'Admin') {
@@ -110,7 +110,7 @@ timerouter.post("/api/routes/live", async (req, res) => {
     if (!route) return res.status(404).json({ message: "Route not found" });
     if (!schedule) return res.status(404).json({ message: "Schedule not found" });
 
-    // Get the latest live station record
+ 
     const liveStation = await LiveStation.findOne({ routeID, scheduleID })
       .sort({ lastUpdated: -1 })
       .limit(1);
@@ -153,7 +153,6 @@ timerouter.post("/api/routes/live", async (req, res) => {
   }
 });
 
-// Add a new endpoint to get the current live station data
 timerouter.get("/api/routes/live/:routeID/:scheduleID", async (req, res) => {
   try {
     const { routeID, scheduleID } = req.params;
@@ -206,10 +205,10 @@ timerouter.post("/api/routes/record-arrival", authenticateToken, authorizeOperat
     const { routeID, stationID, scheduleID, arrivalTime } = req.body;
     const userType = req.user.userType;
 
-    // Delete any existing live station record for this route and schedule
+    
     await LiveStation.deleteMany({ routeID, scheduleID });
 
-    // Create new live station record
+ 
     const newLiveStation = new LiveStation({
       routeID,
       scheduleID,
@@ -224,7 +223,7 @@ timerouter.post("/api/routes/record-arrival", authenticateToken, authorizeOperat
 
     await newLiveStation.save();
 
-    // Get route details for calculating arrival times
+   
     const route = await Route.findById(routeID);
     if (!route) return res.status(404).json({ message: "Route not found" });
 

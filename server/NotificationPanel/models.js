@@ -5,12 +5,12 @@ const NotificationSchema = new mongoose.Schema({
     senderType: { 
       type: String, 
       required: true,
-      enum: ['Passenger', 'Operator', 'Admin', 'Co-Main Station', 'Maintenance Crew']
+      enum: ['Passenger', 'Operator', 'Admin', 'Co-Main Station', 'Maintenance-Crew']
     },
     receiverType: { 
       type: String, 
       required: true,
-      enum: ['All', 'Passenger', 'Operator', 'Admin', 'Co-Main Station', 'Maintenance Crew']
+      enum: ['All', 'Passenger', 'Operator', 'Admin', 'Co-Main Station', 'Maintenance-Crew']
     },
     priority: { 
         type: String, 

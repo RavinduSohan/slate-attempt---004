@@ -22,12 +22,11 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const storedUserType = localStorage.getItem('userType');
-    if (token && storedUserType) {
-      setIsAuthenticated(true);
-      setUserType(storedUserType);
-    }
+   
+    localStorage.removeItem('token');
+    localStorage.removeItem('userType');
+    setIsAuthenticated(false);
+    setUserType(null);
   }, []);
 
   const handleLogin = async (credentials) => {
@@ -41,7 +40,9 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       setUserType(userType);
 
-      navigate(`/${userType.replace(/\s+/g, '-').toLowerCase()}`);
+      // Update URL generation to handle special characters
+      const routePath = userType.toLowerCase().replace(/\s+/g, '-');
+      navigate(`/${routePath}`);
     } catch (error) {
       console.error('Login error:', error);
       throw error;
@@ -59,10 +60,12 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       setUserType(userType);
 
-      navigate(`/${userType.replace(/\s+/g, '-').toLowerCase()}`);
+      // Update URL generation to handle special characters
+      const routePath = userType.toLowerCase().replace(/\s+/g, '-');
+      navigate(`/${routePath}`);
     } catch (error) {
-      console.error('Signup error:', error);
-      throw error;
+      console.error('Signup error:', error.response?.data?.message || error.message);
+      throw new Error(error.response?.data?.message || 'Failed to sign up');
     }
   };
 

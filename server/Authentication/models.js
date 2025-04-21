@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
   userType: { 
     type: String, 
     required: true, 
-    enum: ['Passenger', 'Operator', 'Admin', 'Co-Main Station', 'Maintenance-Crew'] 
+    enum: ['Passenger', 'Operator', 'Admin', 'Co-Main Station', 'Maintenance-Crew'] // Use hyphen
   },
   createdAt: { type: Date, default: Date.now }
 });

@@ -91,6 +91,16 @@ export default function App() {
           }
         />
 
+        <Route
+          path="/maintenance-crew"
+          element={
+            <ProtectedRoute allowedRoles={['Maintenance-Crew']}>
+              <UserDashboard userType="Maintenance-Crew" onLogout={handleLogout} />
+              <UseScheduleTimeline />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Root Route */}
         <Route
           path="/"

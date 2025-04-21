@@ -77,7 +77,7 @@ const SignupForm = ({ onSubmit }) => {
             <option value="Operator">Operator</option>
             <option value="Admin">Admin</option>
             <option value="Co-Main Station">Co-Main Station</option>
-            <option value="Maintenance Crew">Maintenance Crew</option>
+            <option value="Maintenance-Crew">Maintenance Crew</option> {/* Change display text but keep value with hyphen */}
           </select>
         </div>
 

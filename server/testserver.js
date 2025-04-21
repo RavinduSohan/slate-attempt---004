@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import router from './ultimateserver.js';
 import timerouter from './TimeLineGraph/testroutes.js';
-import reportRouter from './reports/reportservice.js'; // Fix import path
+import reportRouter from './reports/reportservice.js'; 
 
 dotenv.config();
 
@@ -25,7 +25,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/train-myt
 
 app.use(router);
 app.use(timerouter);
-app.use('/api/reports', reportRouter); // Add a base path for report routes
+app.use('/api/reports', reportRouter); 
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
