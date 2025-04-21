@@ -145,83 +145,151 @@ const UserDashboard = ({ userType, onLogout }) => {
       {userType === 'Admin' && (
         <div className="admin-reports-section container my-5">
           <h3 className="text-center text-primary mb-4">Admin Reports</h3>
-          <div className="row">
+          <div className="row g-4">
             <div className="col-md-6">
-              <h5>User Count by Role</h5>
-              <PieChart width={400} height={300}>
-                <Pie
-                  data={reportData.userCounts}
-                  dataKey="count"
-                  nameKey="_id"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  fill="#8884d8"
-                >
-                  {reportData.userCounts.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={['#0088FE', '#00C49F', '#FFBB28', '#FF8042'][index % 4]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
+              <div className="card h-100">
+                <div className="card-header bg-light">
+                  <h5 className="mb-0">User Count by Role</h5>
+                </div>
+                <div className="card-body d-flex">
+                  <PieChart width={400} height={300}>
+                    <Pie
+                      data={reportData.userCounts}
+                      dataKey="count"
+                      nameKey="_id"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      fill="#8884d8"
+                    >
+                      {reportData.userCounts.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={['#0088FE', '#00C49F', '#FFBB28', '#FF8042'][index % 4]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                  <div className="ms-3 p-3 bg-light rounded">
+                    <h6 className="border-bottom pb-2 text-primary">User Statistics</h6>
+                    {reportData.userCounts.map((entry) => (
+                      <div key={entry._id} className="d-flex justify-content-between align-items-center mb-2">
+                        <span className="fw-medium">{entry._id}:</span>
+                        <span className="badge bg-primary">{entry.count} users</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
+
             <div className="col-md-6">
-              <h5>Notifications Summary</h5>
-              <PieChart width={400} height={300}>
-                <Pie
-                  data={reportData.notificationSummary}
-                  dataKey="count"
-                  nameKey="_id"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  fill="#82ca9d"
-                >
-                  {reportData.notificationSummary.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={['#FF8042', '#FFBB28', '#00C49F', '#0088FE'][index % 4]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
+              <div className="card h-100">
+                <div className="card-header bg-light">
+                  <h5 className="mb-0">Notifications Summary</h5>
+                </div>
+                <div className="card-body d-flex">
+                  <PieChart width={400} height={300}>
+                    <Pie
+                      data={reportData.notificationSummary}
+                      dataKey="count"
+                      nameKey="_id"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      fill="#82ca9d"
+                    >
+                      {reportData.notificationSummary.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={['#FF8042', '#FFBB28', '#00C49F', '#0088FE'][index % 4]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                  <div className="ms-3 p-3 bg-light rounded">
+                    <h6 className="border-bottom pb-2 text-primary">Notification Details</h6>
+                    {reportData.notificationSummary.map((entry) => (
+                      <div key={entry._id} className="d-flex justify-content-between align-items-center mb-2">
+                        <span className="fw-medium">{entry._id}:</span>
+                        <span className="badge bg-info">{entry.count} notifications</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="row mt-4">
+
             <div className="col-md-6">
-              <h5>Route Usage</h5>
-              <BarChart
-                width={500}
-                height={300}
-                data={routeUsageData}
-                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="routeName" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="usage" fill="#8884d8" />
-              </BarChart>
+              <div className="card h-100">
+                <div className="card-header bg-light">
+                  <h5 className="mb-0">Route Usage Statistics</h5>
+                </div>
+                <div className="card-body">
+                  <BarChart
+                    width={500}
+                    height={300}
+                    data={routeUsageData}
+                    margin={{ top: 20, right: 30, left: 40, bottom: 20 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis 
+                      dataKey="routeName" 
+                      label={{ 
+                        value: 'Railway Routes', 
+                        position: 'insideBottom', 
+                        offset: -10,
+                        style: { fontWeight: 500 }
+                      }}
+                    />
+                    <YAxis 
+                      label={{ 
+                        value: 'Passenger Count', 
+                        angle: -90, 
+                        position: 'insideLeft',
+                        offset: 0,
+                        style: { fontWeight: 500 }
+                      }}
+                    />
+                    <Tooltip />
+                    <Bar dataKey="usage" fill="#8884d8" />
+                  </BarChart>
+                </div>
+              </div>
             </div>
+
             <div className="col-md-6">
-              <h5>Schedule Trends</h5>
-              <PieChart width={400} height={300}>
-                <Pie
-                  data={reportData.scheduleTrends}
-                  dataKey="count"
-                  nameKey="_id"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  fill="#8884d8"
-                >
-                  {reportData.scheduleTrends.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={['#0088FE', '#00C49F', '#FFBB28', '#FF8042'][index % 4]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
+              <div className="card h-100">
+                <div className="card-header bg-light">
+                  <h5 className="mb-0">Schedule Trends</h5>
+                </div>
+                <div className="card-body d-flex">
+                  <PieChart width={400} height={300}>
+                    <Pie
+                      data={reportData.scheduleTrends}
+                      dataKey="count"
+                      nameKey="_id"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={100}
+                      fill="#8884d8"
+                    >
+                      {reportData.scheduleTrends.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={['#0088FE', '#00C49F', '#FFBB28', '#FF8042'][index % 4]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                  <div className="ms-3 p-3 bg-light rounded">
+                    <h6 className="border-bottom pb-2 text-primary">Schedule Statistics</h6>
+                    {reportData.scheduleTrends.map((entry) => (
+                      <div key={entry._id} className="d-flex justify-content-between align-items-center mb-2">
+                        <span className="fw-medium">{entry._id}:</span>
+                        <span className="badge bg-success">{entry.count} schedules</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
