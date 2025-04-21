@@ -131,3 +131,31 @@
   font-size: 0.85rem;
   padding: 5px 10px;
 }
+
+.card.bg-light {
+  background-color: #e9ecef !important;
+  opacity: 0.9;
+  transition: all 0.3s ease;
+}
+
+.card.bg-light .card-body {
+  color: #495057;
+}
+
+.card.bg-light .card-title {
+  opacity: 0.8;
+}
+
+.card.bg-light .card-text {
+  opacity: 0.8;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #138496;
+  color: white;
+}

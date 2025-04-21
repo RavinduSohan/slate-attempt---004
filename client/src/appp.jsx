@@ -24,27 +24,17 @@ export default function App() {
             isAuthenticated ? (
               <Navigate to={`/${userType.replace(/\s+/g, '-').toLowerCase()}`} replace />
             ) : (
-              <div className="auth-container">
-               <div className="auth-tabs d-flex justify-content-center mb-4">
-                <button
-                  className="auth-tab btn btn-outline-primary btn-lg me-2"
-                  onClick={() => setAuthMode('login')}
-                >
-                  Login
-                </button>
-                <button
-                  className="auth-tab btn btn-outline-primary btn-lg"
-                  onClick={() => setAuthMode('signup')}
-                >
-                  Sign Up
-                </button>
-              </div>
-
-                {authMode === 'login' ? (
-                  <LoginForm onSubmit={handleLogin} />
-                ) : (
-                  <SignupForm onSubmit={handleSignup} />
-                )}
+              <div className="auth-split-container">
+                <div className="auth-image-side">
+                  <img src="/src/assets/tsec1.jpg" alt="Railway" />
+                </div>
+                <div className="auth-form-side">
+                  {authMode === 'login' ? (
+                    <LoginForm onSubmit={handleLogin} onToggleMode={() => setAuthMode('signup')} />
+                  ) : (
+                    <SignupForm onSubmit={handleSignup} onToggleMode={() => setAuthMode('login')} />
+                  )}
+                </div>
               </div>
             )
           }

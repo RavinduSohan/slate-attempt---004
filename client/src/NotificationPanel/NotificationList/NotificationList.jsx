@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import './NotificationList.css';
+import axios from 'axios';
 
-const NotificationList = ({ notifications, onDelete }) => {
+const NotificationList = ({ notifications, onDelete, onRefresh }) => {
   const [expandedId, setExpandedId] = useState(null);
 
   const toggleFullNotice = (id) => {
@@ -11,13 +12,32 @@ const NotificationList = ({ notifications, onDelete }) => {
   const getPriorityClass = (priority) => {
     switch (priority) {
       case 'Info':
-        return 'bg-success text-white'; // Green for Info
+        return 'bg-success text-white';
       case 'Warning':
-        return 'bg-warning text-dark'; // Yellow for Warning
+        return 'bg-warning text-dark';
       case 'Error':
-        return 'bg-danger text-white'; // Red for Error
+        return 'bg-danger text-white';
       default:
         return 'bg-secondary text-white';
+    }
+  };
+
+  const handleMarkAsRead = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.patch(
+        `http://localhost:5000/api/notifications/${id}/read`,
+        {},
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      // Refresh notifications after toggling read status
+      onRefresh();
+    } catch (error) {
+      console.error('Error toggling read status:', error);
     }
   };
 
@@ -29,7 +49,7 @@ const NotificationList = ({ notifications, onDelete }) => {
           notifications.map((notification) => (
             <div
               key={notification._id}
-              className="card mb-3 shadow-sm"
+              className={`card mb-3 shadow-sm ${notification.isRead ? 'bg-secondary bg-opacity-10' : ''}`}
             >
               <div className={`card-header ${getPriorityClass(notification.priority)}`}>
                 <span className="fw-bold">{notification.priority}</span>
@@ -43,12 +63,20 @@ const NotificationList = ({ notifications, onDelete }) => {
                   <p className="card-text">{notification.fullNotice}</p>
                 )}
                 <div className="d-flex justify-content-between">
-                  <button
-                    onClick={() => toggleFullNotice(notification._id)}
-                    className="btn btn-success btn-sm"
-                  >
-                    {expandedId === notification._id ? 'Hide Full Notice' : 'Show Full Notice'}
-                  </button>
+                  <div>
+                    <button
+                      onClick={() => toggleFullNotice(notification._id)}
+                      className="btn btn-success btn-sm me-2"
+                    >
+                      {expandedId === notification._id ? 'Hide Full Notice' : 'Show Full Notice'}
+                    </button>
+                    <button
+                      onClick={() => handleMarkAsRead(notification._id)}
+                      className={`btn btn-sm ${notification.isRead ? 'btn-secondary' : 'btn-info'}`}
+                    >
+                      {notification.isRead ? 'Mark as Unread' : 'Mark as Read'}
+                    </button>
+                  </div>
                   <button
                     onClick={() => onDelete(notification._id)}
                     className="btn btn-danger btn-sm"

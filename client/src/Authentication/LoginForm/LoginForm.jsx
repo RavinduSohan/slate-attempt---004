@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './LoginForm.css';
 
-const LoginForm = ({ onSubmit }) => {
+const LoginForm = ({ onSubmit, onToggleMode }) => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
@@ -12,7 +12,7 @@ const LoginForm = ({ onSubmit }) => {
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center vh-100">
+    <div className="auth-container d-flex justify-content-center align-items-center vh-100">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -49,7 +49,17 @@ const LoginForm = ({ onSubmit }) => {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary w-100">Login</button>
+        <button type="submit" className="btn btn-primary w-100 mb-3">Login</button>
+        <p className="text-center mb-0">
+          Don't have an account?{' '}
+          <button 
+            type="button" 
+            className="btn btn-link p-0" 
+            onClick={onToggleMode}
+          >
+            Sign up here
+          </button>
+        </p>
       </form>
     </div>
   );

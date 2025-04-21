@@ -18,6 +18,10 @@ const NotificationSchema = new mongoose.Schema({
         default: 'Info' // Ensure default value
     },
     fullNotice: { type: String }, // Make fullNotice optional
+    isRead: { 
+        type: Boolean, 
+        default: false 
+    },
     createdAt: { type: Date, default: Date.now }
 });
 

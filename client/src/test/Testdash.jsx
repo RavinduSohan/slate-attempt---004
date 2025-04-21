@@ -46,7 +46,9 @@ const UserDashboard = ({ userType, onLogout }) => {
   const fetchNotifications = async () => {
     try {
       const response = await api.get(`/notifications/${userType}`);
-      setNotifications(response.data);
+      if (response.data) {
+        setNotifications(response.data);
+      }
     } catch (error) {
       console.error('Error fetching notifications:', error);
     }
@@ -116,7 +118,11 @@ const UserDashboard = ({ userType, onLogout }) => {
           <NotificationForm onSubmit={handlePostNotification} />
 
           <h3 className="fs-1 fw-bold text-center mt-3 mb-6 text-primary">Your Notifications</h3>
-          <NotificationList notifications={notifications} onDelete={handleDeleteNotification} />
+          <NotificationList 
+            notifications={notifications} 
+            onDelete={handleDeleteNotification} 
+            onRefresh={fetchNotifications}
+          />
         </div>
       </div>
 

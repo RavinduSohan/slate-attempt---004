@@ -151,4 +151,21 @@ router.delete('/api/notifications/:id', authenticateToken, async (req, res) => {
   }
 });
 
+router.patch('/api/notifications/:id/read', authenticateToken, async (req, res) => {
+  try {
+    const notification = await Notification.findById(req.params.id);
+    if (!notification) {
+      return res.status(404).json({ message: 'Notification not found' });
+    }
+
+    // Toggle the isRead status
+    notification.isRead = !notification.isRead;
+    await notification.save();
+    
+    res.json(notification);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating notification', error: error.message });
+  }
+});
+
 export default router;
