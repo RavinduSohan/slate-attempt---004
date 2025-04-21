@@ -168,4 +168,38 @@ router.patch('/api/notifications/:id/read', authenticateToken, async (req, res) 
   }
 });
 
+router.get('/api/notifications/unread-counts', async (req, res) => {
+  try {
+    const result = await Notification.aggregate([
+      { $match: { isRead: false } },
+      { $group: { _id: "$receiverType", count: { $sum: 1 } } }
+    ]);
+    
+    const counts = result.reduce((acc, {_id, count}) => {
+      acc[_id] = count;
+      return acc;
+    }, {});
+    
+    res.json(counts);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching counts', error: error.message });
+  }
+});
+
+router.get('/api/notifications/:userType/unread-count', async (req, res) => {
+  try {
+    const { userType } = req.params;
+    const count = await Notification.countDocuments({
+      isRead: false,
+      $or: [
+        { receiverType: 'All' },
+        { receiverType: userType }
+      ]
+    });
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching unread count', error: error.message });
+  }
+});
+
 export default router;

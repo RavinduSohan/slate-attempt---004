@@ -27,14 +27,16 @@ const UserDashboard = ({ userType, onLogout }) => {
     scheduleTrends: []
   });
   const [routeUsageData, setRouteUsageData] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     fetchNotifications();
+    fetchUnreadCount();
     if (userType === 'Admin') {
       fetchReports();
       generateMockRouteUsageData();
     }
-  }, []);
+  }, [userType]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -51,6 +53,15 @@ const UserDashboard = ({ userType, onLogout }) => {
       }
     } catch (error) {
       console.error('Error fetching notifications:', error);
+    }
+  };
+
+  const fetchUnreadCount = async () => {
+    try {
+      const response = await api.get(`/notifications/${userType}/unread-count`);
+      setUnreadCount(response.data.count);
+    } catch (error) {
+      console.error('Error fetching unread count:', error);
     }
   };
 
@@ -102,7 +113,12 @@ const UserDashboard = ({ userType, onLogout }) => {
   return (
     <div className="dashboard">
       <nav className="navbar">
-        <h2 style={{ marginLeft: '25px' }}>Welcome, {userType}</h2>
+        <div className="d-flex align-items-center">
+          <h2 style={{ marginLeft: '25px' }}>Welcome, {userType}</h2>
+          <div className="ms-3 badge bg-primary">
+            {unreadCount} Unread Notifications
+          </div>
+        </div>
         <button onClick={onLogout} className="btn btn-danger">
           Logout
         </button>

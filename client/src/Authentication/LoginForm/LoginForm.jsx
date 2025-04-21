@@ -12,56 +12,53 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
   };
 
   return (
-    <div className="auth-container d-flex justify-content-center align-items-center vh-100">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onSubmit(formData);
-        }}
-        className="shadow-lg p-5 rounded bg-white"
-        style={{ maxWidth: '400px', width: '100%' }}
-      >
-        <h2 className="text-center mb-4 text-primary">Login</h2>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(formData);
+      }}
+      className="login-form shadow-lg p-5 rounded bg-white"
+    >
+      <h2 className="text-center mb-4 text-primary">Login</h2>
 
-        <div className="form-group mb-3">
-          <label htmlFor="username" className="form-label">Username</label>
-          <input
-            type="text"
-            name="username"
-            id="username"
-            placeholder="Enter your username"
-            value={formData.username}
-            onChange={handleChange}
-            className="form-control"
-          />
-        </div>
+      <div className="form-group mb-3">
+        <label htmlFor="username" className="form-label">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Enter your username"
+          value={formData.username}
+          onChange={handleChange}
+          className="form-control"
+        />
+      </div>
 
-        <div className="form-group mb-4">
-          <label htmlFor="password" className="form-label">Password</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Enter your password"
-            value={formData.password}
-            onChange={handleChange}
-            className="form-control"
-          />
-        </div>
+      <div className="form-group mb-4">
+        <label htmlFor="password" className="form-label">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Enter your password"
+          value={formData.password}
+          onChange={handleChange}
+          className="form-control"
+        />
+      </div>
 
-        <button type="submit" className="btn btn-primary w-100 mb-3">Login</button>
-        <p className="text-center mb-0">
-          Don't have an account?{' '}
-          <button 
-            type="button" 
-            className="btn btn-link p-0" 
-            onClick={onToggleMode}
-          >
-            Sign up here
-          </button>
-        </p>
-      </form>
-    </div>
+      <button type="submit" className="btn btn-primary w-100 mb-3">Login</button>
+      <p className="text-center mb-0">
+        Don't have an account?{' '}
+        <button 
+          type="button" 
+          className="btn btn-link p-0" 
+          onClick={onToggleMode}
+        >
+          Sign up here
+        </button>
+      </p>
+    </form>
   );
 };
 
