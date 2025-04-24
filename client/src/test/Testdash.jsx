@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import NotificationForm from '../NotificationPanel/NotificationForm/NotificationForm.jsx';
 import NotificationList from '../NotificationPanel/NotificationList/NotificationList.jsx';
 import HeroSection from '../Components/herosection/herosection.jsx';
@@ -117,6 +118,12 @@ const UserDashboard = ({ userType, onLogout }) => {
           <h2 style={{ marginLeft: '25px' }}>Welcome, {userType}</h2>
           <div className="ms-3 badge bg-primary">
             {unreadCount} Unread Notifications
+          </div>
+          {/* Add Question Panel Link */}
+          <div className="ms-3">
+            <Link to="/questions" className="btn btn-info btn-sm">
+              Questions & Support
+            </Link>
           </div>
         </div>
         <button onClick={onLogout} className="btn btn-danger">

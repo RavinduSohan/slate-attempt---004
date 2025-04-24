@@ -6,6 +6,7 @@ import SignupForm from './Authentication/SigupForm/SignupForm.jsx';
 import UserDashboard from './test/Testdash.jsx';
 import TimeLineDashboard from './TimeLineGraph/TimeLineDashboard.jsx';
 import UseScheduleTimeline from './TimeLineGraph/newtimeline.jsx';
+import QuestionPanel from './QuestionPanel/QuestionPanel.jsx';
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'slick-carousel/slick/slick.css'; 
 import 'slick-carousel/slick/slick-theme.css';
@@ -87,6 +88,16 @@ export default function App() {
             <ProtectedRoute allowedRoles={['Maintenance-Crew']}>
               <UserDashboard userType="Maintenance-Crew" onLogout={handleLogout} />
               <UseScheduleTimeline />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* New Route for Question Panel */}
+        <Route
+          path="/questions"
+          element={
+            <ProtectedRoute allowedRoles={['Passenger', 'Operator', 'Admin', 'Co-Main Station', 'Maintenance-Crew']}>
+              <QuestionPanel />
             </ProtectedRoute>
           }
         />
