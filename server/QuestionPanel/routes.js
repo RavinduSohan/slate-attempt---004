@@ -23,12 +23,21 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
-// Post a new question
+// Post a new question - Only block Admin from posting
 questionRouter.post('/questions', authenticateToken, async (req, res) => {
   try {
     const { title, description } = req.body;
     const userId = req.user.userId;
     const userType = req.user.userType;
+    
+    // Only block Admin from posting questions
+    // Co-Main Station should be able to post questions
+    if (userType === 'Admin') {
+      return res.status(403).json({ 
+        success: false,
+        message: 'Admins cannot post questions' 
+      });
+    }
     
     const question = new Question({
       title,
@@ -60,8 +69,9 @@ questionRouter.get('/questions', authenticateToken, async (req, res) => {
     let query = {};
     const userType = req.user.userType;
     
-    // If passenger or co-main station, only show their own questions
-    if (userType === 'Passenger' || userType === 'Co-Main Station') {
+    // If Admin or Co-Main Station, show all questions
+    // Otherwise, only show their own questions
+    if (userType !== 'Admin' && userType !== 'Co-Main Station') {
       query = { 'askedBy.userId': req.user.userId };
     }
     
@@ -93,7 +103,8 @@ questionRouter.get('/questions/:id', authenticateToken, async (req, res) => {
     
     // Check if user is authorized to view this question
     const userType = req.user.userType;
-    if (userType !== 'Admin' && userType !== 'Operator' && 
+    // Updated: Allow Co-Main Station to view all questions (like Admin)
+    if (userType !== 'Admin' && userType !== 'Co-Main Station' && 
         question.askedBy.userId.toString() !== req.user.userId) {
       return res.status(403).json({ 
         success: false,
@@ -114,14 +125,14 @@ questionRouter.get('/questions/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Answer a question
+// Answer a question - Only Admin and Co-Main Station can answer
 questionRouter.post('/questions/:id/answer', authenticateToken, async (req, res) => {
   try {
     const { answer } = req.body;
     const userType = req.user.userType;
     
-    // Only Admin, Operator, or Co-Main Station can answer questions
-    if (userType !== 'Admin' && userType !== 'Operator' && userType !== 'Co-Main Station') {
+    // Only Admin or Co-Main Station can answer questions
+    if (userType !== 'Admin' && userType !== 'Co-Main Station') {
       return res.status(403).json({ 
         success: false,
         message: 'Not authorized to answer questions' 

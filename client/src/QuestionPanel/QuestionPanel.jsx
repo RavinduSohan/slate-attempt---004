@@ -14,7 +14,11 @@ const QuestionPanel = () => {
 
   // Get user type from localStorage
   const userType = localStorage.getItem('userType');
-  const canAnswer = ['Admin', 'Operator', 'Co-Main Station'].includes(userType);
+  // Modified: Only Admin and Co-Main Station can answer questions
+  const canAnswer = ['Admin', 'Co-Main Station'].includes(userType);
+  // Check if user is admin (to hide question form)
+  // Only hide form for Admin, not for Co-Main Station
+  const isAdmin = userType === 'Admin';
   
   useEffect(() => {
     fetchQuestions();
@@ -130,43 +134,45 @@ const QuestionPanel = () => {
       {error && <div className="alert alert-danger">{error}</div>}
       {success && <div className="alert alert-success">{success}</div>}
 
-      {/* Question Form */}
-      <div className="question-form">
-        <h3>Ask a Question</h3>
-        <form onSubmit={handleSubmitQuestion}>
-          <div className="mb-3">
-            <label htmlFor="questionTitle" className="form-label">Title</label>
-            <input 
-              type="text" 
-              className="form-control" 
-              id="questionTitle"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter question title"
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="questionDescription" className="form-label">Description</label>
-            <textarea 
-              className="form-control" 
-              id="questionDescription" 
-              rows="4"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter detailed description of your question"
-              required
-            ></textarea>
-          </div>
-          <button 
-            type="submit" 
-            className="btn btn-primary" 
-            disabled={loading}
-          >
-            {loading ? 'Submitting...' : 'Submit Question'}
-          </button>
-        </form>
-      </div>
+      {/* Question Form - Hidden only for Admin users */}
+      {!isAdmin && (
+        <div className="question-form">
+          <h3>Ask a Question</h3>
+          <form onSubmit={handleSubmitQuestion}>
+            <div className="mb-3">
+              <label htmlFor="questionTitle" className="form-label">Title</label>
+              <input 
+                type="text" 
+                className="form-control" 
+                id="questionTitle"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Enter question title"
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="questionDescription" className="form-label">Description</label>
+              <textarea 
+                className="form-control" 
+                id="questionDescription" 
+                rows="4"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Enter detailed description of your question"
+                required
+              ></textarea>
+            </div>
+            <button 
+              type="submit" 
+              className="btn btn-primary" 
+              disabled={loading}
+            >
+              {loading ? 'Submitting...' : 'Submit Question'}
+            </button>
+          </form>
+        </div>
+      )}
 
       <div className="row">
         {/* Question List */}
