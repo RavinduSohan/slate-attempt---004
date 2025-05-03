@@ -7,6 +7,11 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
     password: '',
   });
 
+  // Function to show alert dialog
+  const showAlertDialog = (message) => {
+    window.alert(message);
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -15,7 +20,17 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        onSubmit(formData);
+        try {
+          onSubmit(formData)
+            .then(() => {
+              showAlertDialog('Login successful!');
+            })
+            .catch(error => {
+              showAlertDialog(error.message || 'Login failed!');
+            });
+        } catch (error) {
+          showAlertDialog('Login failed!');
+        }
       }}
       className="login-form shadow-lg p-5 rounded bg-white"
     >

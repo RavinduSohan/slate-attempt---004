@@ -9,6 +9,13 @@ const SignupForm = ({ onSubmit, onToggleMode }) => {
     userType: 'Passenger',
   });
 
+  // Add alert state
+  const [alert, setAlert] = useState({
+    show: false,
+    message: '',
+    type: '' // 'success' or 'danger'
+  });
+
   // Add validation states
   const [emailValidation, setEmailValidation] = useState({
     isValid: false,
@@ -56,6 +63,11 @@ const SignupForm = ({ onSubmit, onToggleMode }) => {
     setPasswordValidation(validation);
   };
 
+  // Function to show alert dialog
+  const showAlertDialog = (message) => {
+    window.alert(message);
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -66,7 +78,17 @@ const SignupForm = ({ onSubmit, onToggleMode }) => {
         e.preventDefault();
         // Add validation check before submitting
         if (passwordValidation.isValid && emailValidation.isValid) {
-          onSubmit(formData);
+          try {
+            onSubmit(formData)
+              .then(() => {
+                showAlertDialog('Sign up successful!');
+              })
+              .catch(error => {
+                showAlertDialog(error.message || 'Sign up failed!');
+              });
+          } catch (error) {
+            showAlertDialog('Sign up failed!');
+          }
         }
       }}
       className="shadow-lg p-5 rounded bg-white"
