@@ -12,12 +12,11 @@ const QuestionPanel = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Get user type from localStorage
+  
   const userType = localStorage.getItem('userType');
-  // Modified: Only Admin and Co-Main Station can answer questions
+  
   const canAnswer = ['Admin', 'Co-Main Station'].includes(userType);
-  // Check if user is admin (to hide question form)
-  // Only hide form for Admin, not for Co-Main Station
+  
   const isAdmin = userType === 'Admin';
   
   useEffect(() => {
@@ -87,7 +86,7 @@ const QuestionPanel = () => {
       setError('');
       fetchQuestions();
       
-      // Refresh the selected question to show the new answer
+      
       const updatedQuestion = await QuestionService.getQuestionById(selectedQuestion._id);
       setSelectedQuestion(updatedQuestion);
     } catch (err) {
@@ -105,7 +104,7 @@ const QuestionPanel = () => {
       setSuccess('Question closed successfully!');
       fetchQuestions();
       
-      // Update the selected question if it's the one being closed
+      
       if (selectedQuestion && selectedQuestion._id === questionId) {
         const updatedQuestion = await QuestionService.getQuestionById(questionId);
         setSelectedQuestion(updatedQuestion);
@@ -134,7 +133,7 @@ const QuestionPanel = () => {
       {error && <div className="alert alert-danger">{error}</div>}
       {success && <div className="alert alert-success">{success}</div>}
 
-      {/* Question Form - Hidden only for Admin users */}
+      
       {!isAdmin && (
         <div className="question-form">
           <h3>Ask a Question</h3>
@@ -175,7 +174,7 @@ const QuestionPanel = () => {
       )}
 
       <div className="row">
-        {/* Question List */}
+        
         <div className={selectedQuestion ? "col-md-5" : "col-md-12"}>
           <div className="question-list">
             <h3>Your Questions</h3>
@@ -216,7 +215,7 @@ const QuestionPanel = () => {
           </div>
         </div>
 
-        {/* Question Details */}
+        
         {selectedQuestion && (
           <div className="col-md-7">
             <div className="card question-details">

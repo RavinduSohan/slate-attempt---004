@@ -28,7 +28,7 @@ const authenticateToken = (req, res, next) => {
 
 router.post('/api/auth/signup', async (req, res) => {
   try {
-    const { username, email, password, userType } = req.body; // Added email
+    const { username, email, password, userType } = req.body; 
 
     const existingUser = await User.findOne({ 
       $or: [
@@ -48,7 +48,7 @@ router.post('/api/auth/signup', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       username,
-      email,     // Add email to user creation
+      email,     
       password: hashedPassword,
       userType
     });
@@ -104,7 +104,7 @@ router.post('/api/auth/login', async (req, res) => {
 
 router.post('/api/notifications', authenticateToken, async (req, res) => {
   try {
-    const { message, receiverType, senderType, fullNotice, priority } = req.body; // Include priority
+    const { message, receiverType, senderType, fullNotice, priority } = req.body; 
     const notification = new Notification({
       message,
       receiverType,
@@ -158,7 +158,7 @@ router.patch('/api/notifications/:id/read', authenticateToken, async (req, res) 
       return res.status(404).json({ message: 'Notification not found' });
     }
 
-    // Toggle the isRead status
+    
     notification.isRead = !notification.isRead;
     await notification.save();
     

@@ -14,7 +14,7 @@ const ScheduleTimeline = ({ routes }) => {
   const [isLiveTracking, setIsLiveTracking] = useState(false);
   const [error, setError] = useState("");
   
-  // Get user type from localStorage
+  
   const userType = localStorage.getItem('userType');
   const isOperatorOrAdmin = userType === 'Operator' || userType === 'Admin';
 

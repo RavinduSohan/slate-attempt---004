@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/train-myt
 app.use(router);
 app.use(timerouter);
 app.use('/api/reports', reportRouter); 
-app.use('/api', questionRouter); // Add question router
+app.use('/api', questionRouter); 
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

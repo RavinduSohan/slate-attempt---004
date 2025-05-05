@@ -25,7 +25,7 @@ const StationManagement = ({ routes, onStationAdded }) => {
     </h3>
   
     <div className="row g-3">
-      {/* Select Route */}
+      
       <div className="col-12">
         <select 
           value={selectedRouteId} 
@@ -41,7 +41,7 @@ const StationManagement = ({ routes, onStationAdded }) => {
         </select>
       </div>
   
-      {/* Station Name Input */}
+      
       <div className="col-md-6">
         <input
           type="text"
@@ -52,7 +52,7 @@ const StationManagement = ({ routes, onStationAdded }) => {
         />
       </div>
   
-      {/* Time Gap Input */}
+      
       <div className="col-md-6">
         <input
           type="number"
@@ -63,7 +63,7 @@ const StationManagement = ({ routes, onStationAdded }) => {
         />
       </div>
   
-      {/* Add Station Button */}
+      
       <div className="col-12 text-center">
         <button 
           onClick={handleAddStation} 

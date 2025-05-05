@@ -42,7 +42,7 @@ const UserDashboard = ({ userType, onLogout }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       generateMockRouteUsageData();
-    }, 5000); // Update mock data every 5 seconds
+    }, 5000); 
     return () => clearInterval(interval);
   }, []);
 
@@ -85,7 +85,7 @@ const UserDashboard = ({ userType, onLogout }) => {
     const routes = ['Route A', 'Route B', 'Route C', 'Route D', 'Route E'];
     const mockData = routes.map((route) => ({
       routeName: route,
-      usage: Math.floor(Math.random() * 10000) + 10000, // Random usage between 10k and 20k
+      usage: Math.floor(Math.random() * 10000) + 10000, 
     }));
     setRouteUsageData(mockData);
   };
@@ -119,7 +119,7 @@ const UserDashboard = ({ userType, onLogout }) => {
           <div className="ms-3 badge bg-primary">
             {unreadCount} Unread Notifications
           </div>
-          {/* Add Question Panel Link */}
+          
           <div className="ms-3">
             <Link to="/questions" className="btn btn-info btn-sm">
               Questions & Support

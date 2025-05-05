@@ -41,7 +41,7 @@ export default function App() {
           }
         />
 
-        {/* Protected Routes */}
+        
         <Route
           path="/admin"
           element={
@@ -92,7 +92,7 @@ export default function App() {
           }
         />
 
-        {/* New Route for Question Panel */}
+        
         <Route
           path="/questions"
           element={
@@ -102,7 +102,7 @@ export default function App() {
           }
         />
 
-        {/* Root Route */}
+        
         <Route
           path="/"
           element={
@@ -114,7 +114,7 @@ export default function App() {
           }
         />
 
-        {/* 404 Route */}
+        
         <Route
           path="*"
           element={

@@ -8,7 +8,7 @@ const HeroSection = () => {
       <img src={heroimage01} alt="Train" className="hero-image" />
       <div className="hero-text">
         <h2>Welcome to the Future of Railway Travel</h2>
-        <p>Efficient, convenient, and secure travel solutions with RFID-based ticketing and real-time tracking.</p>
+        <p>Efficient, convenient, and secure travel solutions with Consistent Communication and real-time tracking.</p>
       </div>
     </div>
   );

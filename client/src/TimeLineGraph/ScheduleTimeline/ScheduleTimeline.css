@@ -4,7 +4,7 @@
   }
   
   .schedule-timeline h2 {
-    font-size: 1.25rem; /* text-xl */
+    font-size: 1.25rem; 
     font-weight: bold;
     margin-bottom: 1rem;
   }
@@ -27,18 +27,18 @@
   }
   
   .timeline-controls button {
-    background-color: #3b82f6; /* blue-500 */
+    background-color: #3b82f6; 
     color: white;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
   }
   
   .timeline-controls button:hover {
-    background-color: #2563eb; /* Darker blue */
+    background-color: #2563eb; 
   }
   
   .timeline-controls button:disabled {
-    background-color: #9ca3af; /* gray-400 */
+    background-color: #9ca3af; 
     cursor: not-allowed;
   }
   

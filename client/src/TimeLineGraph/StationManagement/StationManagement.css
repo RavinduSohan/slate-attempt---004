@@ -4,7 +4,7 @@
   }
   
   .station-management h3 {
-    font-size: 1.125rem; /* text-lg */
+    font-size: 1.125rem; 
     font-weight: 600;
     margin-bottom: 0.75rem;
   }
@@ -26,22 +26,22 @@
   }
   
   .station-controls input::placeholder {
-    color: #6b7280; /* gray-500 */
+    color: #6b7280; 
   }
   
   .station-controls button {
-    background-color: #3b82f6; /* blue-500 */
+    background-color: #3b82f6; 
     color: white;
     cursor: pointer;
     transition: background-color 0.2s ease-in-out;
   }
   
   .station-controls button:hover {
-    background-color: #2563eb; /* Darker blue */
+    background-color: #2563eb; 
   }
   
   .station-controls button:disabled {
-    background-color: #9ca3af; /* gray-400 */
+    background-color: #9ca3af; 
     cursor: not-allowed;
   }
   

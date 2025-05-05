@@ -1,24 +1,24 @@
-/* General form container styling */
+
 .form-container {
     max-width: 600px;
-    margin: 0 auto; /* Center horizontally */
+    margin: 0 auto; 
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
-    background-color: #f8f9fa; /* Light background */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f8f9fa; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
   }
   
-  /* Title styling */
+  
   .form-container h4 {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #007bff; /* Bootstrap primary color */
+    color: #007bff; 
     text-align: center;
     margin-bottom: 20px;
   }
   
-  /* Input field spacing and borders */
+
   .form-container .form-control {
     font-size: 1rem;
     padding: 10px;
@@ -32,7 +32,7 @@
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
   }
   
-  /* Button styling */
+  
   .form-container .btn-primary {
     font-size: 1rem;
     padding: 10px;
@@ -43,10 +43,10 @@
   }
   
   .form-container .btn-primary:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3; 
   }
   
-  /* Mobile responsiveness */
+ 
   @media (max-width: 768px) {
     .form-container {
       padding: 15px;

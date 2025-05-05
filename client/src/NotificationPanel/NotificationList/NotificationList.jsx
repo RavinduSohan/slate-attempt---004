@@ -34,7 +34,7 @@ const NotificationList = ({ notifications, onDelete, onRefresh }) => {
           }
         }
       );
-      // Refresh notifications after toggling read status
+      
       onRefresh();
     } catch (error) {
       console.error('Error toggling read status:', error);

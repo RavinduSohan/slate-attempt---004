@@ -15,9 +15,9 @@ const NotificationSchema = new mongoose.Schema({
     priority: { 
         type: String, 
         enum: ['Info', 'Warning', 'Error'], 
-        default: 'Info' // Ensure default value
+        default: 'Info' 
     },
-    fullNotice: { type: String }, // Make fullNotice optional
+    fullNotice: { type: String }, 
     isRead: { 
         type: Boolean, 
         default: false 

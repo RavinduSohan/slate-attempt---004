@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       setUserType(userType);
 
-      // Update URL generation to handle special characters
+      
       const routePath = userType.toLowerCase().replace(/\s+/g, '-');
       navigate(`/${routePath}`);
     } catch (error) {
@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       setUserType(userType);
 
-      // Update URL generation to handle special characters
+      
       const routePath = userType.toLowerCase().replace(/\s+/g, '-');
       navigate(`/${routePath}`);
     } catch (error) {

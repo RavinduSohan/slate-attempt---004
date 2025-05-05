@@ -6,7 +6,7 @@ const NotificationForm = ({ onSubmit }) => {
     message: '',
     receiverType: 'All',
     priority: 'Info',
-    fullNotice: '' // Keep fullNotice optional
+    fullNotice: '' 
   });
 
   const handleChange = (e) => {

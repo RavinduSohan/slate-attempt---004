@@ -1,6 +1,6 @@
 .features-section {
     display: flex;
-    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+    flex-wrap: wrap; 
     justify-content: space-around;
     padding: 50px;
     background-color: #f1f1f1;

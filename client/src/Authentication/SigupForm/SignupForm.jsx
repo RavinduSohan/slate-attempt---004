@@ -9,14 +9,14 @@ const SignupForm = ({ onSubmit, onToggleMode }) => {
     userType: 'Passenger',
   });
 
-  // Add alert state
+
   const [alert, setAlert] = useState({
     show: false,
     message: '',
-    type: '' // 'success' or 'danger'
+    type: '' 
   });
 
-  // Add validation states
+
   const [emailValidation, setEmailValidation] = useState({
     isValid: false,
     message: ''
@@ -29,7 +29,7 @@ const SignupForm = ({ onSubmit, onToggleMode }) => {
     hasSpecialChar: false
   });
 
-  // Validate email and password when they change
+  
   useEffect(() => {
     validateEmail(formData.email);
   }, [formData.email]);
@@ -38,7 +38,7 @@ const SignupForm = ({ onSubmit, onToggleMode }) => {
     validatePassword(formData.password);
   }, [formData.password]);
 
-  // Email validation function
+  
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValid = emailRegex.test(email);
@@ -49,7 +49,7 @@ const SignupForm = ({ onSubmit, onToggleMode }) => {
     });
   };
 
-  // Password validation function
+  
   const validatePassword = (password) => {
     const validation = {
       hasMinLength: password.length >= 8,
@@ -63,7 +63,7 @@ const SignupForm = ({ onSubmit, onToggleMode }) => {
     setPasswordValidation(validation);
   };
 
-  // Function to show alert dialog
+  
   const showAlertDialog = (message) => {
     window.alert(message);
   };
@@ -76,7 +76,7 @@ const SignupForm = ({ onSubmit, onToggleMode }) => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        // Add validation check before submitting
+        
         if (passwordValidation.isValid && emailValidation.isValid) {
           try {
             onSubmit(formData)

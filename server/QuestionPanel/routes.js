@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 const questionRouter = express.Router();
 
-// Authentication middleware
+
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -23,15 +23,14 @@ const authenticateToken = (req, res, next) => {
   }
 };
 
-// Post a new question - Only block Admin from posting
+
 questionRouter.post('/questions', authenticateToken, async (req, res) => {
   try {
     const { title, description } = req.body;
     const userId = req.user.userId;
     const userType = req.user.userType;
     
-    // Only block Admin from posting questions
-    // Co-Main Station should be able to post questions
+ 
     if (userType === 'Admin') {
       return res.status(403).json({ 
         success: false,
@@ -63,14 +62,13 @@ questionRouter.post('/questions', authenticateToken, async (req, res) => {
   }
 });
 
-// Get all questions
+
 questionRouter.get('/questions', authenticateToken, async (req, res) => {
   try {
     let query = {};
     const userType = req.user.userType;
     
-    // If Admin or Co-Main Station, show all questions
-    // Otherwise, only show their own questions
+  
     if (userType !== 'Admin' && userType !== 'Co-Main Station') {
       query = { 'askedBy.userId': req.user.userId };
     }
@@ -89,7 +87,7 @@ questionRouter.get('/questions', authenticateToken, async (req, res) => {
   }
 });
 
-// Get question by ID
+
 questionRouter.get('/questions/:id', authenticateToken, async (req, res) => {
   try {
     const question = await Question.findById(req.params.id);
@@ -101,9 +99,9 @@ questionRouter.get('/questions/:id', authenticateToken, async (req, res) => {
       });
     }
     
-    // Check if user is authorized to view this question
+   
     const userType = req.user.userType;
-    // Updated: Allow Co-Main Station to view all questions (like Admin)
+    
     if (userType !== 'Admin' && userType !== 'Co-Main Station' && 
         question.askedBy.userId.toString() !== req.user.userId) {
       return res.status(403).json({ 
@@ -125,13 +123,13 @@ questionRouter.get('/questions/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Answer a question - Only Admin and Co-Main Station can answer
+
 questionRouter.post('/questions/:id/answer', authenticateToken, async (req, res) => {
   try {
     const { answer } = req.body;
     const userType = req.user.userType;
     
-    // Only Admin or Co-Main Station can answer questions
+    
     if (userType !== 'Admin' && userType !== 'Co-Main Station') {
       return res.status(403).json({ 
         success: false,
@@ -174,7 +172,7 @@ questionRouter.post('/questions/:id/answer', authenticateToken, async (req, res)
   }
 });
 
-// Close a question
+
 questionRouter.patch('/questions/:id/close', authenticateToken, async (req, res) => {
   try {
     const question = await Question.findById(req.params.id);
@@ -186,7 +184,7 @@ questionRouter.patch('/questions/:id/close', authenticateToken, async (req, res)
       });
     }
     
-    // Check if user is authorized to close this question
+    
     const userType = req.user.userType;
     if (userType !== 'Admin' && question.askedBy.userId.toString() !== req.user.userId) {
       return res.status(403).json({ 

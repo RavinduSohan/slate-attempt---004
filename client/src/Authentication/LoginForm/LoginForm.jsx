@@ -7,7 +7,7 @@ const LoginForm = ({ onSubmit, onToggleMode }) => {
     password: '',
   });
 
-  // Function to show alert dialog
+ 
   const showAlertDialog = (message) => {
     window.alert(message);
   };

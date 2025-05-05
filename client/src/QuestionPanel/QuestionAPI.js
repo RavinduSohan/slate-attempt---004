@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
-// Add authentication token to all requests
+
 const getAuthToken = () => {
   return localStorage.getItem('token');
 };
@@ -14,14 +14,13 @@ const authHeaders = () => ({
 });
 
 export const QuestionService = {
-  // Post a new question (Not available for Admin)
+  
   postQuestion: async (title, description) => {
     try {
-      // Get userType from localStorage to implement client-side validation
+      
       const userType = localStorage.getItem('userType');
       
-      // Block only Admin from posting questions (client-side validation)
-      // Allow Co-Main Station to post questions
+     
       if (userType === 'Admin') {
         throw new Error('Admins cannot post questions');
       }
@@ -37,7 +36,7 @@ export const QuestionService = {
     }
   },
 
-  // Get all questions (based on user permissions)
+ 
   getAllQuestions: async () => {
     try {
       const response = await axios.get(
@@ -50,7 +49,7 @@ export const QuestionService = {
     }
   },
 
-  // Get a single question by ID
+ 
   getQuestionById: async (questionId) => {
     try {
       const response = await axios.get(
@@ -63,13 +62,13 @@ export const QuestionService = {
     }
   },
 
-  // Answer a question (Admin and Co-Main Station only)
+ 
   answerQuestion: async (questionId, answer) => {
     try {
-      // Get userType from localStorage to implement client-side validation
+      
       const userType = localStorage.getItem('userType');
       
-      // Block users other than Admin and Co-Main Station (client-side validation)
+      
       if (userType !== 'Admin' && userType !== 'Co-Main Station') {
         throw new Error('Only Admin and Co-Main Station can answer questions');
       }
@@ -85,7 +84,7 @@ export const QuestionService = {
     }
   },
 
-  // Close a question (Admin or question creator only)
+  
   closeQuestion: async (questionId) => {
     try {
       const response = await axios.patch(
